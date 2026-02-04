@@ -3,12 +3,15 @@
 **Cours :** *React – Composants fonctionnels, Shadcn UI, Vite*  
 **Stack :** Vite + React 19 + JavaScript + Tailwind CSS 4 + Shadcn UI + IndexedDB
 
+> **Document optionnel** — Ce fichier n’est pas au programme du cours. Il propose une version « pro » du projet pour ceux qui veulent un guide pas à pas. **Zustand, Biome, React Hook Form + Zod** sont des choix de ce repo, pas imposés : le cours laisse les élèves libres (useState/Context, pas de lib de state imposée ; tooling au choix).
+
 > **Alignement avec le sujet** : Cette recommandation implémente le projet *Crée ton bloc-notes (1/2)* (voir `Resources/Projet block notes.md`) en version « pro » : mêmes fonctionnalités (sidebar, liste notes, preview markdown, éditeur, persistance) + auto-save, IndexedDB, Zustand, validation. Noms de composants : *NoteDisplay* (sujet) = *NotePreview* (ici) ; *MarkdownInput* (sujet) = partie éditeur dans *NoteEditor*.
 
 ---
 
 ## PHASE 1 : SETUP INITIAL
 
+*Dépendances optionnelles (Zustand, React Hook Form + Zod, Biome) : uniquement si tu suis cette recommandation « pro » ; le cours ne les exige pas.*
 
 ```bash
 # Création projet Vite React (JavaScript)
@@ -24,19 +27,19 @@ npm install -D tailwindcss @tailwindcss/vite
 # Installation Shadcn UI dependencies
 npm install class-variance-authority clsx tailwind-merge lucide-react
 
-# Installation state management & data
+# Installation state management & data (Zustand optionnel)
 npm install zustand idb-keyval
 
 # Installation markdown processing (remplacement Showdown obsolète)
 npm install react-markdown remark-gfm rehype-raw rehype-sanitize
 
-# Installation React Hook Form + Zod
+# Installation React Hook Form + Zod (optionnel)
 npm install react-hook-form @hookform/resolvers zod
 
-# Installation dev tools
+# Installation dev tools (Biome optionnel)
 npm install -D @biomejs/biome
 
-# Init Biome (remplace ESLint+Prettier)
+# Init Biome (remplace ESLint+Prettier) — optionnel
 npx @biomejs/biome init
 
 # Init Git

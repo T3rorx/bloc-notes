@@ -2,13 +2,13 @@
 
 ## seed-from-resources.js
 
-Génère les notes de démarrage de l’app à partir des fichiers **Resources/** (hors **Old/**).
+Generates the app’s starter notes from the **Resources/** Markdown files (excluding **Old/**).
 
-**Automatique** : le script est lancé avant `npm run dev` et `npm run build` dans `bloc-notes-app`. Les notes Ressources restent à jour à chaque lancement ou build.
+**Automatic:** The script runs before `npm run dev` and `npm run build` in `bloc-notes-app`. Resource-based notes stay in sync on each dev start or build.
 
-**Manuel** (depuis la racine du repo) : `node scripts/seed-from-resources.js` — ou depuis `bloc-notes-app` : `npm run seed`.
+**Manual** (from repo root): `node scripts/seed-from-resources.js` — or from `bloc-notes-app`: `npm run seed`.
 
-Cela met à jour `bloc-notes-app/src/data/seedNotes.js` avec le contenu de :
+This updates `bloc-notes-app/src/data/seedNotes.js` with the content of:
 
 - Projet block notes.md  
 - Projet Bonus Formulaire.md  
@@ -16,4 +16,4 @@ Cela met à jour `bloc-notes-app/src/data/seedNotes.js` avec le contenu de :
 - Composants-fonctionnels.md  
 - recommandation.md  
 
-**Au refresh** : l'app vérifie si chaque note de seed (par id) existe en base ; les manquantes sont ajoutées, les existantes ne sont pas écrasées. À lancer après avoir modifié un de ces fichiers pour que l’app propose les dernières versions en notes par défaut (au premier chargement ou après vidage d’IndexedDB).
+**On refresh:** The app checks whether each seed note (by id) exists in the store; missing ones are added, existing ones are not overwritten. Run after editing any of these files so the app offers the latest versions as default notes (on first load or after clearing IndexedDB).

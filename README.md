@@ -17,17 +17,19 @@
 
 ## Tech Stack
 
+The app in this repo uses the stack below. **The course does not require** state libraries (Zustand), form libraries (React Hook Form, Zod), or a specific linter (Biome) — students are free to use `useState`/Context and their preferred tooling.
+
 | Layer        | Choice                |
 | ------------ | --------------------- |
 | Build        | Vite 7                 |
 | UI           | React 19, JavaScript   |
 | Styling      | Tailwind CSS 4        |
 | Components   | CVA, clsx, tailwind-merge, Lucide icons |
-| State        | Zustand                |
+| State        | Zustand *(optional; course allows useState/Context)* |
 | Persistence  | IndexedDB (idb-keyval) |
 | Markdown     | react-markdown, remark-gfm, rehype-raw, rehype-sanitize |
-| Forms/validation | React Hook Form, Zod, @hookform/resolvers |
-| Tooling      | Biome (lint & format)  |
+| Forms/validation | React Hook Form, Zod *(optional)* |
+| Tooling      | Biome *(optional; ESLint/Prettier or none)* |
 
 ---
 
@@ -111,6 +113,12 @@ Course materials (theory and specs) live in `Resources/`:
 - **recommandation.md** — Step-by-step “pro” setup: stack, config, and implementation notes.
 - **Shadcn-UI.md**, **Composants-fonctionnels.md** — UI and React patterns (course content).
 - **Old/** — Legacy course material (e.g. Class Components); superseded by the current course.
+
+---
+
+## Attribution
+
+This repository (documentation, course materials, and app implementation) was drafted and built with **AI-assisted tooling** (Cursor). Content was reviewed and adapted by the author.
 
 ---
 
