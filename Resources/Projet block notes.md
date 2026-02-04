@@ -35,7 +35,7 @@ Le rendu attendu est un repo GitHub contenant ton application.
 
 Ce projet peut sembler compliqué, j'ai donc décidé de t'assister un peu et de te guider jusqu'à ce que tu aies créé une note. Tu seras ensuite en autonomie pour la gestion de plusieurs notes. Ne te mets pas la pression : tu peux valider l'épreuve si tu arrives à faire une seule note correctement sauvegardée.
 
-Pour commencer, initialise une application React (par ex. avec **Vite** : `pnpm create vite@latest bloc-notes-app --template react-ts`).
+Pour commencer, initialise une application React (par ex. avec **Vite** : `npm create vite@latest bloc-notes-app --template react`).
 
 Ton composant `App` contiendra au moins deux parties pour la zone de droite : **NoteDisplay** (affichage du markdown rendu) et **MarkdownInput** (saisie du titre et du contenu markdown + bouton de sauvegarde). Tout sera écrit en **composants fonctionnels** avec des hooks (voir la ressource *Composants-fonctionnels*).
 
@@ -55,7 +55,7 @@ Le parent (`App`) récupère la donnée du textarea (via le state ou le callback
 Dans NoteDisplay, tu affiches ce markdown converti en HTML. Avec **react-markdown**, tu n'as pas besoin de `dangerouslySetInnerHTML` : le composant gère le rendu de façon sûre. Exemple :
 
 ```bash
-pnpm add react-markdown remark-gfm
+npm install react-markdown remark-gfm
 ```
 
 ```tsx

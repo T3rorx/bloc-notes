@@ -4,32 +4,32 @@ Parfois, nous n'avons pas besoin de tout designer from scratch dans nos applicat
 
 ## 1. Introduction
 
-Shadcn UI n'est pas une dépendance npm classique : ce sont des composants **copiés dans ton repo** (souvent dans `src/components/ui/`). Tu les installes via une CLI qui ajoute uniquement le code dont tu as besoin. Basés sur **Radix UI** (accessibilité, comportements) et **Tailwind CSS** (styles), ils sont entièrement personnalisables car le code vit chez toi. Idéal pour des apps React modernes (Vite, React 18/19, TypeScript).
+Shadcn UI n'est pas une dépendance npm classique : ce sont des composants **copiés dans ton repo** (souvent dans `src/components/ui/`). Tu les installes via une CLI qui ajoute uniquement le code dont tu as besoin. Basés sur **Radix UI** (accessibilité, comportements) et **Tailwind CSS** (styles), ils sont entièrement personnalisables car le code vit chez toi. Idéal pour des apps React modernes (Vite, React 18/19, JavaScript ou TypeScript).
 
 ## 2. Historique et contexte
 
-Shadcn UI est maintenu activement et s'aligne sur l'écosystème actuel : React 19, Tailwind CSS 4, TypeScript. Pas de bundle CSS global à importer : tout est en utilitaires Tailwind et variables CSS. Les composants ciblent les navigateurs modernes (plus de support IE11). Si tu veux une UI cohérente, accessible et facile à thématiser (ex. dark mode), Shadcn est un choix solide en 2025–2026.
+Shadcn UI est maintenu activement et s'aligne sur l'écosystème actuel : React 19, Tailwind CSS 4, JavaScript ou TypeScript. Pas de bundle CSS global à importer : tout est en utilitaires Tailwind et variables CSS. Les composants ciblent les navigateurs modernes (plus de support IE11). Si tu veux une UI cohérente, accessible et facile à thématiser (ex. dark mode), Shadcn est un choix solide en 2025–2026.
 
 ## 3. La ressource
 
 ### 3.1. Prérequis et installation
 
-Tu dois avoir un projet **Vite + React + TypeScript** avec **Tailwind CSS** déjà configuré. Ensuite, initialiser Shadcn une seule fois à la racine du projet :
+Tu dois avoir un projet **Vite + React** (JavaScript ou TypeScript) avec **Tailwind CSS** déjà configuré. Ensuite, initialiser Shadcn une seule fois à la racine du projet :
 
 ```bash
-pnpm dlx shadcn@latest init
+npx shadcn@latest init
 ```
 
-Réponds aux questions (TypeScript : Yes, style : Default, base color : Slate, CSS variables : Yes, etc.). La CLI crée notamment :
+Réponds aux questions (TypeScript : No pour rester en JavaScript, style : Default, base color : Slate, CSS variables : Yes, etc.). La CLI crée notamment :
 
 - `components.json` (config des chemins)
-- `src/lib/utils.ts` avec la fonction `cn()` pour fusionner les classes Tailwind
+- `src/lib/utils.js` (ou `utils.ts` si TypeScript) avec la fonction `cn()` pour fusionner les classes Tailwind
 
 Ensuite, installe uniquement les composants dont tu as besoin, par exemple Button et un sélecteur :
 
 ```bash
-pnpm dlx shadcn@latest add button
-pnpm dlx shadcn@latest add select
+npx shadcn@latest add button
+npx shadcn@latest add select
 ```
 
 Chaque composant est ajouté dans `src/components/ui/` (ou le chemin que tu as choisi). Aucun `import '.../global.css'` type Ant Design : le style vient de Tailwind et du thème défini dans ton CSS.
@@ -80,7 +80,7 @@ Pour les icônes, la stack moderne recommande **Lucide React** : cohérent avec 
 Installation :
 
 ```bash
-pnpm add lucide-react
+npm install lucide-react
 ```
 
 Utilisation : importe l’icône dont tu as besoin et utilise-la comme composant. Tu peux lui passer des props (taille, couleur) via `className` ou `style` :
@@ -104,14 +104,14 @@ Pas de package séparé à configurer : une seule dépendance `lucide-react`, et
 ## 4. Ce qu'il faut retenir
 
 - Shadcn UI = composants **copiés dans ton repo**, pas une grosse lib à importer. Tu gardes le contrôle du code et du style.
-- Stack typique : Vite + React + TypeScript + Tailwind CSS + Shadcn (Radix + Tailwind) + Lucide pour les icônes.
+- Stack typique : Vite + React + JavaScript + Tailwind CSS + Shadcn (Radix + Tailwind) + Lucide pour les icônes.
 - Pas d’import CSS global dédié : tout passe par Tailwind et ton thème (variables CSS, dark mode, etc.).
 - Pour un nouveau projet React moderne, Shadcn UI + Lucide est une alternative solide et à jour aux anciennes libs (Ant Design, Material UI) dans beaucoup de cas.
 
 ## 5. Pour aller plus loin
 
 - Documentation officielle : [ui.shadcn.com](https://ui.shadcn.com)
-- Composants disponibles : parcourir le site et ajouter au besoin avec `pnpm dlx shadcn@latest add <component>`.
+- Composants disponibles : parcourir le site et ajouter au besoin avec `npx shadcn@latest add <component>`.
 - Lucide : [lucide.dev](https://lucide.dev) pour chercher les icônes et copier le nom du composant à importer depuis `lucide-react`.
 
 Si tu veux comparer avec d’autres approches, tu peux regarder **Radix UI** (primitives sans style) ou **Material UI** (MUI) ; Shadcn apporte une couche Radix + Tailwind prête à l’emploi et facile à adapter.

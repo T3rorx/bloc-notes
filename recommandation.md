@@ -1,38 +1,40 @@
 INSTRUCTIONS CURSOR - PROJET BLOC-NOTES PRO 2026
-Stack : Vite + React 19 + TypeScript + Tailwind CSS 4 + Shadcn UI + IndexedDB
+Stack : Vite + React 19 + JavaScript + Tailwind CSS 4 + Shadcn UI + IndexedDB
+
+> **Alignement avec le sujet** : Cette recommandation implémente le projet *Crée ton bloc-notes (1/2)* (voir `Resources/Projet block notes.md`) en version « pro » : mêmes fonctionnalités (sidebar, liste notes, preview markdown, éditeur, persistance) + auto-save, IndexedDB, Zustand, validation. Noms de composants : *NoteDisplay* (sujet) = *NotePreview* (ici) ; *MarkdownInput* (sujet) = partie éditeur dans *NoteEditor*.
 
 PHASE 1 : SETUP INITIAL (Copy-paste dans terminal Cursor)
 bash
-# Création projet Vite React TypeScript
-pnpm create vite@latest bloc-notes-app --template react-ts
+# Création projet Vite React (JavaScript)
+npm create vite@latest bloc-notes-app --template react
 cd bloc-notes-app
 
 # Installation dépendances base
-pnpm install
+npm install
 
 # Installation Tailwind CSS 4 (latest)
-pnpm add -D tailwindcss@next @tailwindcss/postcss@next
+npm install -D tailwindcss@next @tailwindcss/postcss@next
 
 # Installation Shadcn UI dependencies
-pnpm add class-variance-authority clsx tailwind-merge lucide-react
+npm install class-variance-authority clsx tailwind-merge lucide-react
 
 # Installation state management & data
-pnpm add zustand idb-keyval
+npm install zustand idb-keyval
 
 # Installation markdown processing (remplacement Showdown obsolète)
-pnpm add react-markdown remark-gfm rehype-raw rehype-sanitize
+npm install react-markdown remark-gfm rehype-raw rehype-sanitize
 
 # Installation React Hook Form + Zod
-pnpm add react-hook-form @hookform/resolvers zod
+npm install react-hook-form @hookform/resolvers zod
 
 # Installation dev tools
-pnpm add -D @biomejs/biome @types/node
+npm install -D @biomejs/biome
 
 # Init Biome (remplace ESLint+Prettier)
-pnpm dlx @biomejs/biome init
+npx @biomejs/biome init
 
 # Init Git
-git init && git add -A && git commit -m "chore: init vite react ts stack 2026"
+git init && git add -A && git commit -m "chore: init vite react js stack 2026"
 PHASE 2 : CONFIGURATION TAILWIND CSS 4
 Créer postcss.config.js à la racine :
 
@@ -101,22 +103,10 @@ json
     }
   }
 }
-PHASE 4 : CONFIGURATION TYPESCRIPT
-Ajouter dans tsconfig.json (section compilerOptions) :
+PHASE 4 : CONFIGURATION VITE (alias @/)
+Mettre à jour vite.config.js à la racine :
 
-json
-{
-  "compilerOptions": {
-    // ... existing config
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  }
-}
-Mettre à jour vite.config.ts :
-
-typescript
+javascript
 import path from 'node:path'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
@@ -136,19 +126,17 @@ bash
 src/
 ├── components/
 │   ├── ui/           # Composants Shadcn UI
-│   ├── NoteEditor.tsx
-│   ├── NotePreview.tsx
-│   ├── NoteSidebar.tsx
-│   └── NoteItem.tsx
+│   ├── NoteEditor.jsx
+│   ├── NotePreview.jsx
+│   ├── NoteSidebar.jsx
+│   └── NoteItem.jsx
 ├── lib/
-│   ├── utils.ts      # Helpers Tailwind (cn function)
-│   └── db.ts         # IndexedDB wrapper
+│   ├── utils.js      # Helpers Tailwind (cn function)
+│   └── db.js         # IndexedDB wrapper
 ├── stores/
-│   └── notesStore.ts # Zustand store
-├── types/
-│   └── note.ts       # Types TypeScript
-├── App.tsx
-├── main.tsx
+│   └── notesStore.js # Zustand store
+├── App.jsx
+├── main.jsx
 └── index.css
 PHASE 6 : CODE SOURCE COMPLET (À GÉNÉRER PAR CURSOR)
 Instruction pour Cursor (prompt unique) :
@@ -166,60 +154,59 @@ SPECS FONCTIONNELLES :
 - UI moderne Tailwind CSS 4 avec dark mode par défaut
 
 ARCHITECTURE :
-1. Types (/src/types/note.ts) :
-   - Interface Note { id: string, title: string, content: string, createdAt: number, updatedAt: number }
+1. Modèle de note (objet JS) :
+   - Note : { id, title, content, createdAt, updatedAt } (id string, dates en number)
 
-2. IndexedDB wrapper (/src/lib/db.ts) :
+2. IndexedDB wrapper (/src/lib/db.js) :
    - Fonctions : getAllNotes(), getNote(id), saveNote(note), deleteNote(id)
    - Utiliser idb-keyval avec store 'notes'
    - Chaque note = clé unique UUID
 
-3. Zustand store (/src/stores/notesStore.ts) :
+3. Zustand store (/src/stores/notesStore.js) :
    - State : notes[], currentNoteId, isLoading
    - Actions : loadNotes(), selectNote(id), createNote(), updateNote(note), deleteNote(id)
    - Synchronisation avec IndexedDB automatique
 
 4. Composants :
    
-   A. NoteSidebar (/src/components/NoteSidebar.tsx) :
+   A. NoteSidebar (/src/components/NoteSidebar.jsx) :
       - Liste scrollable des notes
       - Bouton "Nouvelle note" avec icon Lucide Plus
       - NoteItem pour chaque note (affiche titre + 15 premiers mots content)
       - Active state si note sélectionnée
       - Tailwind : bg-slate-900, w-80, border-r, hover effects
 
-   B. NoteEditor (/src/components/NoteEditor.tsx) :
+   B. NoteEditor (/src/components/NoteEditor.jsx) :
       - Input controlled pour titre (className: text-2xl font-bold)
       - Textarea controlled pour markdown (className: font-mono, min-h-[300px])
       - useEffect avec debounce 2s pour auto-save via store.updateNote()
       - React Hook Form + Zod validation (titre requis, max 100 chars)
 
-   C. NotePreview (/src/components/NotePreview.tsx) :
+   C. NotePreview (/src/components/NotePreview.jsx) :
       - ReactMarkdown avec plugins remark-gfm, rehype-raw, rehype-sanitize
       - Styles prose Tailwind : className="prose prose-invert max-w-none"
       - Affiche le markdown rendu en HTML live
 
-   D. Layout principal (App.tsx) :
+   D. Layout principal (App.jsx) :
       - Flex layout : NoteSidebar (fixe) + split vertical NotePreview/NoteEditor
       - Split 50/50 avec résizer optionnel (ou simple border)
       - useEffect initial pour loadNotes()
       - Dark mode par défaut (bg-slate-950, text-slate-100)
 
-5. Utils (/src/lib/utils.ts) :
+5. Utils (/src/lib/utils.js) :
    - Fonction cn() pour merge classNames (clsx + tailwind-merge)
    - Fonction generateId() pour UUID v4
    - Fonction truncateText(text, words) pour preview
 
-6. Main.tsx :
+6. Main.jsx :
    - Pas de StrictMode en dev (double render)
    - Import index.css
 
 STANDARDS CODE 2026 :
 - Functional components only, hooks React 19
-- TypeScript strict mode
+- JavaScript (pas de TypeScript pour l’instant)
 - Zustand selectors pour éviter re-renders
 - Arrow functions, const/let, template literals
-- Pas de any types, tout typé
 - Comments uniquement pour logique complexe
 - Error handling avec try/catch sur IndexedDB ops
 - Loading states pendant fetch notes
@@ -251,7 +238,7 @@ OUTPUT ATTENDU :
 - Inclure imports corrects (paths alias @/)
 - Aucun TODO, aucun placeholder
 - Code production-grade, pas de console.log
-- Typage exhaustif TypeScript
+- Code JavaScript propre et lisible
 
 BONUS (si temps) :
 - Bouton delete note (icon Trash Lucide) dans NoteItem
@@ -262,10 +249,10 @@ Installer composants Shadcn manuellement (si pas de CLI setup) :
 
 bash
 # Setup Shadcn CLI
-pnpm dlx shadcn@latest init
+npx shadcn@latest init
 
 # Répondre prompts :
-# - TypeScript: Yes
+# - TypeScript: No (JavaScript)
 # - Style: Default
 # - Base color: Slate
 # - CSS variables: Yes
@@ -274,11 +261,11 @@ pnpm dlx shadcn@latest init
 # - Utils path: @/lib/utils
 
 # Installer composants utiles
-pnpm dlx shadcn@latest add button
-pnpm dlx shadcn@latest add dialog
-pnpm dlx shadcn@latest add input
-pnpm dlx shadcn@latest add textarea
-pnpm dlx shadcn@latest add toast
+npx shadcn@latest add button
+npx shadcn@latest add dialog
+npx shadcn@latest add input
+npx shadcn@latest add textarea
+npx shadcn@latest add toast
 PHASE 8 : SCRIPTS PACKAGE.JSON
 Ajouter dans package.json :
 
@@ -286,17 +273,16 @@ json
 {
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "lint": "biome check --write ./src",
-    "format": "biome format --write ./src",
-    "type-check": "tsc --noEmit"
+    "format": "biome format --write ./src"
   }
 }
 PHASE 9 : LANCEMENT & TEST
 bash
 # Lancer dev server
-pnpm dev
+npm run dev
 
 # Ouvrir http://localhost:5173
 
@@ -318,7 +304,7 @@ Si projet terminé en avance, ajouter :
 
 Search notes : Input en haut sidebar, filter par titre/contenu
 
-Tags system : Array tags dans Note type, badges Tailwind
+Tags system : Array tags dans l’objet note, badges Tailwind
 
 Export notes : Bouton download en .md ou .json
 
@@ -331,9 +317,7 @@ Sync cloud : Upload notes vers Supabase/Firebase (optionnel)
 Keyboard shortcuts : useHotkeys hook pour Cmd+K search, Cmd+Delete, etc.
 
 CHECKLIST QUALITÉ FINALE
- Aucune erreur TypeScript (pnpm type-check)
-
- Aucune erreur Biome (pnpm lint)
+ Aucune erreur Biome (npm run lint)
 
  Toutes notes persistent après refresh
 
@@ -357,13 +341,13 @@ CHECKLIST QUALITÉ FINALE
 
  Aucun console.log en production
 
- Build production OK (pnpm build) sans warnings
+ Build production OK (npm run build) sans warnings
 
 TECH STACK FINAL
 text
 Frontend:
   - React 19 (Functional components + Hooks)
-  - TypeScript 5.7+ (strict mode)
+  - JavaScript (pas de TypeScript pour l’instant)
   - Vite 6 (dev server instantané)
   - Tailwind CSS 4 (PostCSS, no config file)
 
@@ -387,7 +371,6 @@ Forms:
 
 Quality:
   - Biome (linter + formatter 20x faster)
-  - TypeScript strict
   - Git hooks optionnel (Husky + lint-staged)
 RESOURCES COMPLÉMENTAIRES
 Vite docs : https://vitejs.dev

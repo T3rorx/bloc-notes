@@ -14,7 +14,7 @@ AntDesign est mis à jour très régulièrement. Tu pourras trouver sur leur cha
 3.1. Installation
 Pour installer AntDesign dans ton projet, il te suffira de taper l'une des deux commandes en fonction de ton gestionnaire de paquet préféré.
 
-$ pnpm install antd
+$ npm install antd
 $ yarn add antd
 Il va aussi falloir importer le CSS de AntDesign dans le composant racine de ton projet:
 
@@ -153,7 +153,7 @@ Si besoin, tu peux également utiliser des icons.
 Tu peux trouver la documentation sur les icons en suivant ce lien.
 Pour installer l'utilisation des icons, tu devras taper cette ligne de commande:
 
-pnpm install @ant-design/icons
+npm install @ant-design/icons
 Ensuite, tu tapes dans la barre de recherche l'icon que tu veux, puis tu n'as plus qu'à cliquer dessus. Le code pour le mettre dans ta page sera automatiquement copié dans ton presse-papier.
 
 Dans mon cas, c'est:

@@ -4,7 +4,7 @@ Aujourd’hui, la façon recommandée d’écrire des composants React est d’u
 
 ## 1. Introduction
 
-Un composant fonctionnel est une fonction JavaScript (ou TypeScript) qui reçoit des **props** en argument et retourne du **JSX**. Pour le state et les effets de bord (appels API, timers, abonnements), tu utilises des **hooks** fournis par React : `useState`, `useEffect`, `useRef`, etc. C’est le modèle standard pour tout nouveau code React en 2025–2026.
+Un composant fonctionnel est une fonction JavaScript qui reçoit des **props** en argument et retourne du **JSX**. Pour le state et les effets de bord (appels API, timers, abonnements), tu utilises des **hooks** fournis par React : `useState`, `useEffect`, `useRef`, etc. C’est le modèle standard pour tout nouveau code React en 2025–2026.
 
 ## 2. Historique et contexte
 
@@ -47,19 +47,15 @@ Tu peux aussi écrire en fléchée : `const App = () => { ... }`. Pas de classe,
 
 Les props sont le premier argument de la fonction. Tu les déstructure souvent pour plus de clarté :
 
-```tsx
-interface HelloNameProps {
-  name: string
-}
-
-function HelloName({ name }: HelloNameProps) {
+```jsx
+function HelloName({ name }) {
   return <h2>Hello {name}!</h2>
 }
 
 export default HelloName
 ```
 
-Le parent passe les props comme d’habitude : `<HelloName name="Alice" />`. En TypeScript, définir une interface (ou un type) pour les props permet d’avoir l’autocomplétion et de détecter les erreurs.
+Le parent passe les props comme d’habitude : `<HelloName name="Alice" />`. En JavaScript, les props sont des objets ; tu peux les déstructurer dans les paramètres. XXX d’avoir l’autocomplétion et de détecter les erreurs.
 
 ### 3.3. Le state : useState
 
@@ -98,7 +94,7 @@ Plusieurs valeurs de state : plusieurs hooks :
 function MyComponent() {
   const [count, setCount] = useState(0)
   const [name, setName] = useState('Jean')
-  const [items, setItems] = useState<string[]>([])
+  const [items, setItems] = useState([])
 
   const increment = () => {
     setCount((prev) => prev + 1)
@@ -123,8 +119,8 @@ En Function Component, il n’y a pas de constructeur. Le code en haut du corps 
 import { useRef } from 'react'
 
 function MyComponent() {
-  const inputRef = useRef<HTMLInputElement>(null)
-  const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const inputRef = useRef(null)
+  const intervalIdRef = useRef(null)
 
   const focusInput = () => {
     inputRef.current?.focus()
@@ -171,8 +167,8 @@ function UsersPage() {
 **Réagir à un changement de prop** (équivalent de `componentDidUpdate` ciblé) :
 
 ```tsx
-function UserPage({ userId }: { userId: string }) {
-  const [userData, setUserData] = useState<unknown>(null)
+function UserPage({ userId }) {
+  const [userData, setUserData] = useState(null)
 
   useEffect(() => {
     fetchUser(userId).then(setUserData)
@@ -190,7 +186,7 @@ function UserPage({ userId }: { userId: string }) {
 
 ```tsx
 function MyComponent() {
-  const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const intervalIdRef = useRef(null)
 
   useEffect(() => {
     intervalIdRef.current = setInterval(() => {
@@ -218,7 +214,7 @@ Résumé rapide :
 
 - Les **Function Components** sont des fonctions qui prennent des props et retournent du JSX. C’est la forme recommandée pour tout nouveau code React.
 - Le **state** se gère avec **useState** (une ou plusieurs valeurs), sans `this.state` ni `this.setState`.
-- Les **props** sont le premier argument de la fonction ; en TypeScript, on les type avec une interface ou un type.
+- Les **props** sont le premier argument de la fonction (objet JavaScript).
 - Il n’y a **pas de constructeur** : initialisation via `useState(() => ...)` si besoin, et **useRef** pour références ou valeurs qui ne déclenchent pas de rendu.
 - Le **cycle de vie** se gère avec **useEffect** : tableau de dépendances pour “quand” exécuter, fonction de retour pour le cleanup (démontage).
 
