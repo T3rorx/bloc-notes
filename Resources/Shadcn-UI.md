@@ -4,26 +4,26 @@ Parfois, nous n'avons pas besoin de tout designer from scratch dans nos applicat
 
 ## 1. Introduction
 
-Shadcn UI n'est pas une dépendance npm classique : ce sont des composants **copiés dans ton repo** (souvent dans `src/components/ui/`). Tu les installes via une CLI qui ajoute uniquement le code dont tu as besoin. Basés sur **Radix UI** (accessibilité, comportements) et **Tailwind CSS** (styles), ils sont entièrement personnalisables car le code vit chez toi. Idéal pour des apps React modernes (Vite, React 18/19, JavaScript ou TypeScript).
+Shadcn UI n'est pas une dépendance npm classique : ce sont des composants **copiés dans ton repo** (souvent dans `src/components/ui/`). Tu les installes via une CLI qui ajoute uniquement le code dont tu as besoin. Basés sur **Radix UI** (accessibilité, comportements) et **Tailwind CSS** (styles), ils sont entièrement personnalisables car le code vit chez toi. Idéal pour des apps React modernes (Vite, React 18/19, JavaScript).
 
 ## 2. Historique et contexte
 
-Shadcn UI est maintenu activement et s'aligne sur l'écosystème actuel : React 19, Tailwind CSS 4, JavaScript ou TypeScript. Pas de bundle CSS global à importer : tout est en utilitaires Tailwind et variables CSS. Les composants ciblent les navigateurs modernes (plus de support IE11). Si tu veux une UI cohérente, accessible et facile à thématiser (ex. dark mode), Shadcn est un choix solide en 2025–2026.
+Shadcn UI est maintenu activement et s'aligne sur l'écosystème actuel : React 19, Tailwind CSS 4, JavaScript. Pas de bundle CSS global à importer : tout est en utilitaires Tailwind et variables CSS. Les composants ciblent les navigateurs modernes (plus de support IE11). Si tu veux une UI cohérente, accessible et facile à thématiser (ex. dark mode), Shadcn est un choix solide en 2025–2026.
 
 ## 3. La ressource
 
 ### 3.1. Prérequis et installation
 
-Tu dois avoir un projet **Vite + React** (JavaScript ou TypeScript) avec **Tailwind CSS** déjà configuré. Ensuite, initialiser Shadcn une seule fois à la racine du projet :
+Tu dois avoir un projet **Vite + React** (JavaScript) avec **Tailwind CSS** déjà configuré. Ensuite, initialiser Shadcn une seule fois à la racine du projet :
 
 ```bash
 npx shadcn@latest init
 ```
 
-Réponds aux questions (TypeScript : No pour rester en JavaScript, style : Default, base color : Slate, CSS variables : Yes, etc.). La CLI crée notamment :
+Réponds aux questions (style : Default, base color : Slate, CSS variables : Yes, etc.). La CLI crée notamment :
 
 - `components.json` (config des chemins)
-- `src/lib/utils.js` (ou `utils.ts` si TypeScript) avec la fonction `cn()` pour fusionner les classes Tailwind
+- `src/lib/utils.js` avec la fonction `cn()` pour fusionner les classes Tailwind
 
 Ensuite, installe uniquement les composants dont tu as besoin, par exemple Button et un sélecteur :
 
@@ -104,7 +104,7 @@ Pas de package séparé à configurer : une seule dépendance `lucide-react`, et
 ## 4. Ce qu'il faut retenir
 
 - Shadcn UI = composants **copiés dans ton repo**, pas une grosse lib à importer. Tu gardes le contrôle du code et du style.
-- Stack typique : Vite + React + JavaScript + Tailwind CSS + Shadcn (Radix + Tailwind) + Lucide pour les icônes.
+- Stack typique pour ce projet : Vite + React + JavaScript + Tailwind CSS + Shadcn (Radix + Tailwind) + Lucide pour les icônes (JavaScript uniquement).
 - Pas d’import CSS global dédié : tout passe par Tailwind et ton thème (variables CSS, dark mode, etc.).
 - Pour un nouveau projet React moderne, Shadcn UI + Lucide est une alternative solide et à jour aux anciennes libs (Ant Design, Material UI) dans beaucoup de cas.
 

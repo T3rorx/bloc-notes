@@ -12,8 +12,8 @@ cd bloc-notes-app
 # Installation dépendances base
 npm install
 
-# Installation Tailwind CSS 4 (latest)
-npm install -D tailwindcss@next @tailwindcss/postcss@next
+# Installation Tailwind CSS 4 (plugin Vite, pas PostCSS)
+npm install -D tailwindcss @tailwindcss/vite
 
 # Installation Shadcn UI dependencies
 npm install class-variance-authority clsx tailwind-merge lucide-react
@@ -36,33 +36,14 @@ npx @biomejs/biome init
 # Init Git
 git init && git add -A && git commit -m "chore: init vite react js stack 2026"
 PHASE 2 : CONFIGURATION TAILWIND CSS 4
-Créer postcss.config.js à la racine :
-
-javascript
-export default {
-  plugins: {
-    '@tailwindcss/postcss': {},
-  },
-}
-Remplacer contenu src/index.css :
+Utiliser le plugin Vite (pas PostCSS) pour éviter les erreurs de compatibilité. Remplacer contenu src/index.css :
 
 css
 @import "tailwindcss";
 
-@theme {
-  /* Custom theme variables si nécessaire */
-  --color-primary: oklch(70% 0.15 200);
-  --color-secondary: oklch(60% 0.1 260);
-}
-
-/* Base styles */
 @layer base {
-  * {
-    @apply border-border;
-  }
-  
   body {
-    @apply bg-background text-foreground;
+    @apply antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
@@ -103,16 +84,17 @@ json
     }
   }
 }
-PHASE 4 : CONFIGURATION VITE (alias @/)
+PHASE 4 : CONFIGURATION VITE (alias @/ + Tailwind)
 Mettre à jour vite.config.js à la racine :
 
 javascript
 import path from 'node:path'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -204,7 +186,7 @@ ARCHITECTURE :
 
 STANDARDS CODE 2026 :
 - Functional components only, hooks React 19
-- JavaScript (pas de TypeScript pour l’instant)
+- JavaScript uniquement
 - Zustand selectors pour éviter re-renders
 - Arrow functions, const/let, template literals
 - Comments uniquement pour logique complexe
@@ -252,11 +234,11 @@ bash
 npx shadcn@latest init
 
 # Répondre prompts :
-# - TypeScript: No (JavaScript)
+# - Style: Default, Base color: Slate, etc.
 # - Style: Default
 # - Base color: Slate
 # - CSS variables: Yes
-# - Tailwind config: postcss.config.js
+# - Tailwind : géré par le plugin @tailwindcss/vite (pas de postcss.config.js)
 # - Components path: @/components
 # - Utils path: @/lib/utils
 
@@ -347,7 +329,7 @@ TECH STACK FINAL
 text
 Frontend:
   - React 19 (Functional components + Hooks)
-  - JavaScript (pas de TypeScript pour l’instant)
+  - JavaScript uniquement
   - Vite 6 (dev server instantané)
   - Tailwind CSS 4 (PostCSS, no config file)
 
