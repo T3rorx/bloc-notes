@@ -1,5 +1,6 @@
 # INSTRUCTIONS CURSOR - PROJET BLOC-NOTES PRO 2026
 
+**Cours :** *React – Composants fonctionnels, Shadcn UI, Vite*  
 **Stack :** Vite + React 19 + JavaScript + Tailwind CSS 4 + Shadcn UI + IndexedDB
 
 > **Alignement avec le sujet** : Cette recommandation implémente le projet *Crée ton bloc-notes (1/2)* (voir `Resources/Projet block notes.md`) en version « pro » : mêmes fonctionnalités (sidebar, liste notes, preview markdown, éditeur, persistance) + auto-save, IndexedDB, Zustand, validation. Noms de composants : *NoteDisplay* (sujet) = *NotePreview* (ici) ; *MarkdownInput* (sujet) = partie éditeur dans *NoteEditor*.

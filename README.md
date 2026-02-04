@@ -1,6 +1,7 @@
 # Bloc-Notes
 
-A modern, offline-first markdown note-taking app built with React 19, Vite, and IndexedDB. Write in Markdown, preview in real time, and keep your notes stored in the browser—no backend required.
+**Course:** *React – Composants fonctionnels, Shadcn UI, Vite*  
+**Project:** This repo is the hands-on application of the course — a modern, offline-first markdown note-taking app built with React 19, Vite, and IndexedDB. Write in Markdown, preview in real time, and keep your notes stored in the browser; no backend required.
 
 ---
 
@@ -103,10 +104,13 @@ Seed notes are built from Markdown files in `Resources/` (see `scripts/README.md
 
 ## Resources
 
-- **Projet block notes.md** — Original project specification (French).
+Course materials (theory and specs) live in `Resources/`:
+
+- **Projet block notes.md** — Project specification for the bloc-notes app (French).
 - **Projet Bonus Formulaire.md** — Bonus form project spec.
 - **recommandation.md** — Step-by-step “pro” setup: stack, config, and implementation notes.
-- **Shadcn-UI.md**, **Composants-fonctionnels.md** — UI and React patterns used in the app.
+- **Shadcn-UI.md**, **Composants-fonctionnels.md** — UI and React patterns (course content).
+- **Old/** — Legacy course material (e.g. Class Components); superseded by the current course.
 
 ---
 

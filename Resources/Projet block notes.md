@@ -1,5 +1,7 @@
 # Crée ton bloc-notes (1/2)
 
+*Projet pratique du cours **React – Composants fonctionnels, Shadcn UI, Vite**.*
+
 Dans le projet d'aujourd'hui, tu vas recréer l'application **Bloc-Notes** disponible sur tous les appareils. Tu pourras même y accéder en hors-ligne et toujours avoir tes données stockées. Tu utiliseras des **composants fonctionnels** et les **hooks** React (voir la ressource *Composants-fonctionnels*).
 
 ## 1. Introduction
