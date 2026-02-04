@@ -1,10 +1,15 @@
-INSTRUCTIONS CURSOR - PROJET BLOC-NOTES PRO 2026
-Stack : Vite + React 19 + JavaScript + Tailwind CSS 4 + Shadcn UI + IndexedDB
+# INSTRUCTIONS CURSOR - PROJET BLOC-NOTES PRO 2026
+
+**Stack :** Vite + React 19 + JavaScript + Tailwind CSS 4 + Shadcn UI + IndexedDB
 
 > **Alignement avec le sujet** : Cette recommandation implémente le projet *Crée ton bloc-notes (1/2)* (voir `Resources/Projet block notes.md`) en version « pro » : mêmes fonctionnalités (sidebar, liste notes, preview markdown, éditeur, persistance) + auto-save, IndexedDB, Zustand, validation. Noms de composants : *NoteDisplay* (sujet) = *NotePreview* (ici) ; *MarkdownInput* (sujet) = partie éditeur dans *NoteEditor*.
 
-PHASE 1 : SETUP INITIAL (Copy-paste dans terminal Cursor)
-bash
+---
+
+## PHASE 1 : SETUP INITIAL
+
+
+```bash
 # Création projet Vite React (JavaScript)
 npm create vite@latest bloc-notes-app --template react
 cd bloc-notes-app
@@ -35,10 +40,15 @@ npx @biomejs/biome init
 
 # Init Git
 git init && git add -A && git commit -m "chore: init vite react js stack 2026"
-PHASE 2 : CONFIGURATION TAILWIND CSS 4
-Utiliser le plugin Vite (pas PostCSS) pour éviter les erreurs de compatibilité. Remplacer contenu src/index.css :
+```
 
-css
+---
+
+## PHASE 2 : CONFIGURATION TAILWIND CSS 4
+
+Utiliser le plugin Vite (pas PostCSS). Remplacer le contenu de `src/index.css` par :
+
+```css
 @import "tailwindcss";
 
 @layer base {
@@ -47,10 +57,15 @@ css
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
-PHASE 3 : CONFIGURATION BIOME
-Remplacer contenu biome.json :
+```
 
-json
+---
+
+## PHASE 3 : CONFIGURATION BIOME
+
+Remplacer le contenu de `biome.json` par :
+
+```json
 {
   "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
   "vcs": {
@@ -84,10 +99,15 @@ json
     }
   }
 }
-PHASE 4 : CONFIGURATION VITE (alias @/ + Tailwind)
-Mettre à jour vite.config.js à la racine :
+```
 
-javascript
+---
+
+## PHASE 4 : CONFIGURATION VITE (alias @/ + Tailwind)
+
+Mettre à jour `vite.config.js` à la racine :
+
+```javascript
 import path from 'node:path'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
@@ -101,10 +121,15 @@ export default defineConfig({
     },
   },
 })
-PHASE 5 : STRUCTURE DES DOSSIERS
-Créer l'arborescence suivante dans src/ :
+```
 
-bash
+---
+
+## PHASE 5 : STRUCTURE DES DOSSIERS
+
+Créer l'arborescence suivante dans `src/` :
+
+```
 src/
 ├── components/
 │   ├── ui/           # Composants Shadcn UI
@@ -120,12 +145,16 @@ src/
 ├── App.jsx
 ├── main.jsx
 └── index.css
-PHASE 6 : CODE SOURCE COMPLET (À GÉNÉRER PAR CURSOR)
-Instruction pour Cursor (prompt unique) :
-text
-Génère le code production-ready suivant pour une app Bloc-notes React moderne :
+```
 
-SPECS FONCTIONNELLES :
+---
+
+## PHASE 6 : CODE SOURCE COMPLET (À GÉNÉRER PAR CURSOR)
+
+Instruction pour Cursor (prompt unique) :
+
+**SPECS FONCTIONNELLES :**
+
 - Sidebar gauche avec liste des notes (titre + preview 15 mots)
 - Zone principale avec prévisualisation markdown en haut + éditeur en bas
 - Éditeur markdown avec input titre + textarea contenu
@@ -135,123 +164,48 @@ SPECS FONCTIONNELLES :
 - Preview markdown live avec react-markdown (support GFM + tables)
 - UI moderne Tailwind CSS 4 avec dark mode par défaut
 
-ARCHITECTURE :
-1. Modèle de note (objet JS) :
-   - Note : { id, title, content, createdAt, updatedAt } (id string, dates en number)
+**ARCHITECTURE :**
 
-2. IndexedDB wrapper (/src/lib/db.js) :
-   - Fonctions : getAllNotes(), getNote(id), saveNote(note), deleteNote(id)
-   - Utiliser idb-keyval avec store 'notes'
-   - Chaque note = clé unique UUID
+1. **Modèle de note (objet JS)** : `{ id, title, content, createdAt, updatedAt }` (id string, dates en number)
+2. **IndexedDB** (`/src/lib/db.js`) : `getAllNotes()`, `getNote(id)`, `saveNote(note)`, `deleteNote(id)` — idb-keyval, store `notes`, clé = UUID
+3. **Zustand** (`/src/stores/notesStore.js`) : state `notes[]`, `currentNoteId`, `isLoading` ; actions `loadNotes`, `selectNote`, `createNote`, `updateNote`, `deleteNote` ; sync IndexedDB
+4. **Composants** :
+   - **NoteSidebar** : liste scrollable, bouton "Nouvelle note" (Lucide Plus), NoteItem (titre + 15 mots), état actif, Tailwind bg-slate-900, w-80
+   - **NoteEditor** : input titre, textarea markdown, debounce 2s auto-save, React Hook Form + Zod (titre requis, max 100)
+   - **NotePreview** : ReactMarkdown + remark-gfm, rehype-raw, rehype-sanitize, prose
+   - **App.jsx** : layout Sidebar + (Preview / Editor), loadNotes au montage, dark mode
+5. **Utils** (`/src/lib/utils.js`) : `cn()`, `generateId()`, `truncateText(text, words)`
+6. **main.jsx** : pas de StrictMode, import index.css
 
-3. Zustand store (/src/stores/notesStore.js) :
-   - State : notes[], currentNoteId, isLoading
-   - Actions : loadNotes(), selectNote(id), createNote(), updateNote(note), deleteNote(id)
-   - Synchronisation avec IndexedDB automatique
+**STANDARDS :** Functional components, hooks React 19, JavaScript, Zustand selectors, try/catch IndexedDB, loading/empty states.
 
-4. Composants :
-   
-   A. NoteSidebar (/src/components/NoteSidebar.jsx) :
-      - Liste scrollable des notes
-      - Bouton "Nouvelle note" avec icon Lucide Plus
-      - NoteItem pour chaque note (affiche titre + 15 premiers mots content)
-      - Active state si note sélectionnée
-      - Tailwind : bg-slate-900, w-80, border-r, hover effects
+**BONUS (si temps) :** Delete note + dialog confirmation, Cmd+N / Cmd+S.
 
-   B. NoteEditor (/src/components/NoteEditor.jsx) :
-      - Input controlled pour titre (className: text-2xl font-bold)
-      - Textarea controlled pour markdown (className: font-mono, min-h-[300px])
-      - useEffect avec debounce 2s pour auto-save via store.updateNote()
-      - React Hook Form + Zod validation (titre requis, max 100 chars)
+---
 
-   C. NotePreview (/src/components/NotePreview.jsx) :
-      - ReactMarkdown avec plugins remark-gfm, rehype-raw, rehype-sanitize
-      - Styles prose Tailwind : className="prose prose-invert max-w-none"
-      - Affiche le markdown rendu en HTML live
+## PHASE 7 : SHADCN UI COMPONENTS
 
-   D. Layout principal (App.jsx) :
-      - Flex layout : NoteSidebar (fixe) + split vertical NotePreview/NoteEditor
-      - Split 50/50 avec résizer optionnel (ou simple border)
-      - useEffect initial pour loadNotes()
-      - Dark mode par défaut (bg-slate-950, text-slate-100)
+Si besoin (dialog, button, etc.) :
 
-5. Utils (/src/lib/utils.js) :
-   - Fonction cn() pour merge classNames (clsx + tailwind-merge)
-   - Fonction generateId() pour UUID v4
-   - Fonction truncateText(text, words) pour preview
+- Setup : `npx shadcn@latest init` (répondre : Style Default, Base color Slate, CSS variables Yes, Tailwind = plugin @tailwindcss/vite, Components @/components, Utils @/lib/utils)
+- Puis installer : `npx shadcn@latest add button`, `add dialog`, `add input`, `add textarea`, `add toast`
 
-6. Main.jsx :
-   - Pas de StrictMode en dev (double render)
-   - Import index.css
-
-STANDARDS CODE 2026 :
-- Functional components only, hooks React 19
-- JavaScript uniquement
-- Zustand selectors pour éviter re-renders
-- Arrow functions, const/let, template literals
-- Comments uniquement pour logique complexe
-- Error handling avec try/catch sur IndexedDB ops
-- Loading states pendant fetch notes
-- Empty states avec messages clairs
-
-STYLING TAILWIND :
-- Design system cohérent : slate color palette
-- Dark mode par défaut (no toggle pour simplifier)
-- Spacing consistent : p-4, gap-4, etc.
-- Border radius : rounded-lg
-- Shadows : shadow-md pour cartes
-- Transitions : transition-colors duration-200
-- Responsive pas nécessaire (desktop first)
-
-PERFORMANCE :
-- Lazy loading react-markdown si >10 notes
-- Debounce auto-save 2s (lodash.debounce ou custom hook)
-- Zustand selectors : const title = useNotesStore(s => s.notes.find(n => n.id === currentId)?.title)
-- React.memo sur NoteItem si liste >50 notes
-
-EDGE CASES :
-- Première visite : créer note par défaut "Bienvenue"
-- Suppression note courante : sélectionner première note restante
-- Sidebar vide : message "Aucune note, créez-en une !"
-- Erreur IndexedDB : fallback state in-memory + toast warning
-
-OUTPUT ATTENDU :
-- Génère tous les fichiers avec code complet ready-to-run
-- Inclure imports corrects (paths alias @/)
-- Aucun TODO, aucun placeholder
-- Code production-grade, pas de console.log
-- Code JavaScript propre et lisible
-
-BONUS (si temps) :
-- Bouton delete note (icon Trash Lucide) dans NoteItem
-- Confirmation dialog avant delete (dialog Shadcn UI)
-- Raccourcis clavier : Cmd+N nouvelle note, Cmd+S save manuelle
-PHASE 7 : SHADCN UI COMPONENTS (Optionnel si besoin dialog/button)
-Installer composants Shadcn manuellement (si pas de CLI setup) :
-
-bash
-# Setup Shadcn CLI
+```bash
 npx shadcn@latest init
-
-# Répondre prompts :
-# - Style: Default, Base color: Slate, etc.
-# - Style: Default
-# - Base color: Slate
-# - CSS variables: Yes
-# - Tailwind : géré par le plugin @tailwindcss/vite (pas de postcss.config.js)
-# - Components path: @/components
-# - Utils path: @/lib/utils
-
-# Installer composants utiles
 npx shadcn@latest add button
 npx shadcn@latest add dialog
 npx shadcn@latest add input
 npx shadcn@latest add textarea
 npx shadcn@latest add toast
-PHASE 8 : SCRIPTS PACKAGE.JSON
-Ajouter dans package.json :
+```
 
-json
+---
+
+## PHASE 8 : SCRIPTS PACKAGE.JSON
+
+Ajouter dans `package.json` :
+
+```json
 {
   "scripts": {
     "dev": "vite",
@@ -261,110 +215,65 @@ json
     "format": "biome format --write ./src"
   }
 }
-PHASE 9 : LANCEMENT & TEST
-bash
-# Lancer dev server
+```
+
+---
+
+## PHASE 9 : LANCEMENT & TEST
+
+Lancer le serveur de dev avec `npm run dev`, puis ouvrir http://localhost:5173.
+
+```bash
 npm run dev
+```
 
-# Ouvrir http://localhost:5173
+**Workflow à tester :** charger notes → créer note → éditer + preview → attendre 2s (auto-save) → recharger page (persistance) → switcher entre notes. Vérifier IndexedDB dans DevTools : **Application** > **Storage** > **IndexedDB** > `bloc-notes-db` > `notes`.
 
-# Tester workflow :
-# 1. App lance, charge notes depuis IndexedDB (vide première fois)
-# 2. Créer nouvelle note via bouton sidebar
-# 3. Taper titre + markdown dans éditeur
-# 4. Vérifier preview live en haut
-# 5. Attendre 2s auto-save (ou Cmd+S)
-# 6. Recharger page, note persiste
-# 7. Créer 2-3 notes supplémentaires
-# 8. Switcher entre notes via sidebar
-# 9. Tester delete note si implémenté
+---
 
-# Vérifier IndexedDB dans DevTools :
-# Application > Storage > IndexedDB > notes > keyval
-PHASE 10 : AMÉLIORATIONS POST-MVP
-Si projet terminé en avance, ajouter :
+## PHASE 10 : AMÉLIORATIONS POST-MVP
 
-Search notes : Input en haut sidebar, filter par titre/contenu
+- Search notes (filter titre/contenu)
+- Tags (array dans note, badges Tailwind)
+- Export .md / .json
+- Rich markdown toolbar (bold, italic, link)
+- Note templates (Meeting, Todo…)
+- Sync cloud (Supabase/Firebase)
+- Raccourcis (Cmd+K search, Cmd+Delete…)
 
-Tags system : Array tags dans l’objet note, badges Tailwind
+---
 
-Export notes : Bouton download en .md ou .json
+## CHECKLIST QUALITÉ FINALE
 
-Rich markdown toolbar : Boutons bold, italic, link (insert syntax)
+- [ ] Aucune erreur Biome (`npm run lint`)
+- [ ] Notes persistent après refresh
+- [ ] Auto-save 2s OK
+- [ ] Preview markdown (headers, lists, code blocks, tables)
+- [ ] Sidebar scrollable si >10 notes
+- [ ] Loading + empty states
+- [ ] Build OK (`npm run build`) sans warnings
 
-Note templates : Dropdown "New from template" (Meeting, Todo, etc.)
+---
 
-Sync cloud : Upload notes vers Supabase/Firebase (optionnel)
+## TECH STACK FINAL
 
-Keyboard shortcuts : useHotkeys hook pour Cmd+K search, Cmd+Delete, etc.
+| Domaine   | Stack |
+|----------|--------|
+| Frontend | React 19, JavaScript, Vite 6, Tailwind CSS 4 |
+| UI       | Shadcn UI, Lucide React, dark mode |
+| State    | Zustand, IndexedDB (idb-keyval) |
+| Markdown | react-markdown, remark-gfm, rehype-raw, rehype-sanitize |
+| Forms    | React Hook Form, Zod |
+| Quality  | Biome |
 
-CHECKLIST QUALITÉ FINALE
- Aucune erreur Biome (npm run lint)
+---
 
- Toutes notes persistent après refresh
+## RESSOURCES COMPLÉMENTAIRES
 
- Auto-save fonctionne (attendre 2s sans typer)
-
- Preview markdown affiche correctement : headers, lists, code blocks, tables
-
- Sidebar scrollable si >10 notes
-
- UI cohérente Tailwind (spacing, colors, fonts)
-
- Loading state initial visible
-
- Empty state si aucune note
-
- Performance fluide (pas de lag typing)
-
- Code commenté uniquement si logique non-évidente
-
- Imports organisés (Biome auto-sort)
-
- Aucun console.log en production
-
- Build production OK (npm run build) sans warnings
-
-TECH STACK FINAL
-text
-Frontend:
-  - React 19 (Functional components + Hooks)
-  - JavaScript uniquement
-  - Vite 6 (dev server instantané)
-  - Tailwind CSS 4 (PostCSS, no config file)
-
-UI:
-  - Shadcn UI (components ownership)
-  - Lucide React (icons modernes)
-  - Dark mode par défaut
-
-State:
-  - Zustand (client state 2KB)
-  - IndexedDB via idb-keyval (persistence)
-
-Markdown:
-  - react-markdown (rendering)
-  - remark-gfm (GitHub Flavored Markdown)
-  - rehype-raw + rehype-sanitize (sécurité HTML)
-
-Forms:
-  - React Hook Form (performance)
-  - Zod (validation type-safe)
-
-Quality:
-  - Biome (linter + formatter 20x faster)
-  - Git hooks optionnel (Husky + lint-staged)
-RESOURCES COMPLÉMENTAIRES
-Vite docs : https://vitejs.dev
-
-Tailwind CSS 4 : https://tailwindcss.com/docs
-
-Shadcn UI : https://ui.shadcn.com
-
-Zustand : https://docs.pmnd.rs/zustand
-
-idb-keyval : https://github.com/jakearchibald/idb-keyval
-
-react-markdown : https://github.com/remarkjs/react-markdown
-
-Biome : https://biomejs.dev
+- [Vite](https://vitejs.dev)
+- [Tailwind CSS 4](https://tailwindcss.com/docs)
+- [Shadcn UI](https://ui.shadcn.com)
+- [Zustand](https://docs.pmnd.rs/zustand)
+- [idb-keyval](https://github.com/jakearchibald/idb-keyval)
+- [react-markdown](https://github.com/remarkjs/react-markdown)
+- [Biome](https://biomejs.dev)

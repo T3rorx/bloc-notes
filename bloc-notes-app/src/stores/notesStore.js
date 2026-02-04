@@ -16,12 +16,19 @@ export const useNotesStore = create((set, get) => ({
       if (seedNotes.length > 0) {
         for (const seed of seedNotes) {
           if (!existingIds.has(seed.id)) {
-            await db.saveNote(seed)
+            try {
+              await db.saveNote(seed)
+            } catch {
+              // IndexedDB peut échouer (privé, quota) : on garde en mémoire
+            }
             notes = [seed, ...notes]
             existingIds.add(seed.id)
           }
         }
         notes = notes.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
+      }
+      if (notes.length === 0 && seedNotes.length > 0) {
+        notes = [...seedNotes].sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
       }
       if (notes.length === 0) {
         const welcome = {
@@ -31,7 +38,11 @@ export const useNotesStore = create((set, get) => ({
           createdAt: Date.now(),
           updatedAt: Date.now(),
         }
-        await db.saveNote(welcome)
+        try {
+          await db.saveNote(welcome)
+        } catch {
+          // afficher quand même
+        }
         set({ notes: [welcome], currentNoteId: welcome.id, isLoading: false })
         return
       }
@@ -41,7 +52,12 @@ export const useNotesStore = create((set, get) => ({
         isLoading: false,
       })
     } catch {
-      set({ notes: [], isLoading: false })
+      if (seedNotes.length > 0) {
+        const notes = [...seedNotes].sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
+        set({ notes, currentNoteId: notes[0]?.id ?? null, isLoading: false })
+      } else {
+        set({ notes: [], isLoading: false })
+      }
     }
   },
 
