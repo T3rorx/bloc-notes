@@ -55,7 +55,7 @@ function HelloName({ name }) {
 export default HelloName
 ```
 
-Le parent passe les props comme d’habitude : `<HelloName name="Alice" />`. En JavaScript, les props sont des objets ; tu peux les déstructurer dans les paramètres. XXX d’avoir l’autocomplétion et de détecter les erreurs.
+Le parent passe les props comme d’habitude : `<HelloName name="Alice" />`. En JavaScript, les props sont des objets ; tu peux les déstructurer directement dans les paramètres.
 
 ### 3.3. Le state : useState
 
