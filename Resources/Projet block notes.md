@@ -1,90 +1,86 @@
-Crée ton bloc-notes (1/2)
+# Crée ton bloc-notes (1/2)
 
-Réduire le projet
-Dans le projet d'aujourd'hui, tu vas recréer l'application **Bloc-Notes** disponible sur tous les appareils. Tu pourras même y accéder en hors-ligne et toujours avoir tes données stockées.
+Dans le projet d'aujourd'hui, tu vas recréer l'application **Bloc-Notes** disponible sur tous les appareils. Tu pourras même y accéder en hors-ligne et toujours avoir tes données stockées. Tu utiliseras des **composants fonctionnels** et les **hooks** React (voir la ressource *Composants-fonctionnels*).
 
-Original
-IA
-Voir le contenu
-Proposer une amélioration du projet
+## 1. Introduction
 
-Personnaliser avec l'IA
-L'assistant IA sera bientôt disponible.
-
-Crée ton bloc-notes (1/2)
-Dans le projet d'aujourd'hui, tu vas recréer l'application Bloc-Notes disponible sur tous les appareils. Tu pourras même y accéder en hors-ligne et toujours avoir tes données stockées.
-
-1. Introduction
 L'une des applications les plus connues au monde est le simple bloc-notes. Disponible sur Windows comme sur Mac, ce dernier peut servir à n'importe quel moment, et pour tout le monde.
 
 Ton objectif, aujourd'hui, sera de créer un bloc-notes. Dans celui-ci, tu pourras écrire en markdown, et ton texte sera affiché en live sous forme de HTML.
 
-Si tu ne sais pas comment écrire en markdown, c'est facile, ne t'en fais pas: suit ce lien.
+Si tu ne sais pas comment écrire en markdown, c'est facile, ne t'en fais pas : suis ce lien.
 
-L'ensemble des notes sera stocké dans le localStorage. Ainsi, tu ne risques aucun souci avec le RGPD.
+L'ensemble des notes sera stocké côté navigateur (localStorage ou IndexedDB). Ainsi, tu ne risques aucun souci avec le RGPD.
 
-2. L'application
+## 2. L'application
+
 Ton application sera constituée de plusieurs parties.
 
+- **À gauche** : une barre de navigation avec la liste des notes. L'utilisateur y voit un titre et le début du texte (~15 mots). Un bouton en haut permet de créer une nouvelle note.
+- **À droite** (~80 % de la largeur) : en haut, le contenu de la note sélectionnée, rendu en HTML ; en bas, un champ pour le titre de la note et un textarea pour le contenu en markdown.
 
+Pour transformer le markdown en HTML, tu utiliseras une lib adaptée à React (par ex. **react-markdown**) : le markdown s'affiche en live en haut. La sauvegarde se fait au clic sur un bouton « Save » (ou en option : sauvegarde automatique toutes les X secondes). Les notes sont persistées (localStorage ou IndexedDB) pour rester visibles après rechargement. L'utilisateur peut changer de note en cliquant dans la liste à gauche et modifier chaque note à sa guise.
 
-Sur la gauche, l'utilisateur aura accès à une barre de navigation. Celle-ci contiendra la liste de tes notes. L'utilisateur pourra y voir un titre et le début du texte (~15 mots). L'utilisateur peut créer une nouvelle note en cliquant sur le bouton du haut.À droite, prenant ~80% de la largeur, l'utilisateur verra le contenu de la note sélectionnée, bien mis en forme en HTML, dans la partie haute.
+## 3. Rendu attendu
 
-Dans la partie basse, un champ de texte (input) permettant de définir le nom de la note, ainsi qu'un autre champ (textarea) permettant de modifier le contenu de la note en markdown.
+Le rendu attendu est un repo GitHub contenant ton application.
 
-Pour transformer ton markdown en HTML, tu pourras utiliser la lib "showdown". Celle-ci te permet de transformer du markdown en HTML, et inversement. C'est grâce à cela que le markdown sera affiché en HTML et en live, sur la partie du dessus. En cliquant sur "save", l'utilisateur sauvegarde la note. C'est-à-dire que s'il recharge la page, sa note est toujours visible dans la liste à gauche. Il faudra donc sauvegarder les notes dans le localStorage.
+- L'utilisateur peut ajouter une note.
+- L'utilisateur peut modifier une note.
+- L'utilisateur peut consulter une note.
+- L'utilisateur peut basculer entre les notes pour voir celle qu'il veut.
+- *[Optionnel]* Le bouton « Sauvegarder » n'existe plus : les notes sont sauvegardées automatiquement (par ex. toutes les 2 secondes après la dernière frappe).
 
-L'utilisateur peut changer de note en cliquant sur l'une d'elles dans la liste à gauche. Il peut la modifier à sa guise.
+## 4. La démarche à suivre
 
-3. Rendu attendu
-Le rendu attendu est un repo gitHub contenant ton application.
+Ce projet peut sembler compliqué, j'ai donc décidé de t'assister un peu et de te guider jusqu'à ce que tu aies créé une note. Tu seras ensuite en autonomie pour la gestion de plusieurs notes. Ne te mets pas la pression : tu peux valider l'épreuve si tu arrives à faire une seule note correctement sauvegardée.
 
-L'utilisateur peut ajouter une note.
-L'utilisateur peut modifier une note.
-L'utilisateur peut consulter une note.
-L'utilisateur peut basculer entre les notes pour voir celle qui lui plaît.
-[OPTIONNEL] Le bouton "sauvegarder" n'existe plus, et les notes sont sauvegardées régulièrement ou à chaque changement dans le texte.
+Pour commencer, initialise une application React (par ex. avec **Vite** : `pnpm create vite@latest bloc-notes-app --template react-ts`).
 
-4. La démarche à suivre
-Ce projet peut se sembler compliqué, j'ai donc décidé de t'assister un petit peu et te guider, jusqu'à ce que tu aies créé une note. Tu seras ensuite mis en autonomie pour la gestion de plusieurs notes. Ne te mets pas la pression. Tu peux avoir les points nécessaires pour réussir l'épreuve si tu arrives à faire une seule note qui est sauvegardée dans le localStorage.
+Ton composant `App` contiendra au moins deux parties pour la zone de droite : **NoteDisplay** (affichage du markdown rendu) et **MarkdownInput** (saisie du titre et du contenu markdown + bouton de sauvegarde). Tout sera écrit en **composants fonctionnels** avec des hooks (voir la ressource *Composants-fonctionnels*).
 
-Pour commencer, initialise une application React comme d'habitude.
+### 4.1. MarkdownInput
 
-Ton composant App contiendra deux parties pour le moment: MarkdownInput et NoteDisplay. C'est ce qui constituera la partie de droite de l'application.
+Commence par le **MarkdownInput**. Deux étapes :
 
-Le composant NoteDisplay correspondra à la partie du haut, où on verra le texte transposé en HTML.
+1. **Composant contrôlé** : le textarea est piloté par un state (ex. `useState` pour le contenu). Chaque frappe met à jour ce state.
+2. **Callback vers le parent** : le parent (ex. `App`) peut recevoir la valeur du textarea via une fonction passée en prop (ex. `onContentChange`). Dans un premier temps, cette fonction peut faire un `console.log` de la valeur.
 
-Le composant MarkdownInput correspondra à la partie du bas, avec le <textarea /> contenant le texte en Markdown et le bouton de sauvegarde.
+Pour le composant contrôlé, tu peux t'appuyer sur la doc React ou sur la ressource *Composants-fonctionnels* (state avec `useState`). Pour le callback parent, la doc React sur les props et la remontée d’état s’applique pareil en composants fonctionnels.
 
-4.1. MarkdownInput
-Je t'invite à commencer par le MarkdownInput. Nous allons séparer cette phase en 2 actions:
+### 4.2. NoteDisplay
 
-Mettre en place un composant contrôlé
-Appeler une fonction de callback fournie par le parent, qui utilisera la value du textarea. Dans un premier temps, celle-ci fera juste un console.log() de cette valeur.
-Pour mettre en place le composant contrôlé, je t'invite à suivre ce lien qui explique bien le principe (sans forcément aller jusqu'au "debouncing", pour le moment).
+Le parent (`App`) récupère la donnée du textarea (via le state ou le callback), puis la passe à **NoteDisplay** en prop (ex. `content` ou `markdown`).
 
-Pour appeler un callback fourni par le parent, si ce n'est pas encore clair pour toi je t'invite à lire cette page de la documentation React qui en parle (même si les exemples utilisent des "Class Components").
+Dans NoteDisplay, tu affiches ce markdown converti en HTML. Avec **react-markdown**, tu n'as pas besoin de `dangerouslySetInnerHTML` : le composant gère le rendu de façon sûre. Exemple :
 
-4.2. NoteDisplay
-Pour mettre en place le composant NoteDisplay, nous allons tout d'abord devoir récupérer la donnée que tu as envoyée au parent (ici, App), contenant la valeur du textarea. Nous la passerons ensuite à NoteDisplay avec une prop.
+```bash
+pnpm add react-markdown remark-gfm
+```
 
-Dans NoteDisplay, il faudra que tu importes la lib showdown, et que tu instancies son convertisseur:
+```tsx
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
-import Showdown from 'showdown';
-const converter = new Showdown.Converter();
-// ...
-Pour transformer du Markdown en HTML, il suffira ensuite de faire converter.makeHtml(markdownValue).
+function NoteDisplay({ markdown }: { markdown: string }) {
+  return (
+    <div className="prose">
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdown}</ReactMarkdown>
+    </div>
+  )
+}
+```
 
-Si tu associes le résultat de cette conversion à une variable content par exemple, et que tu places cette variable dans une balise <div> du JSX, tu verras que dans le navigateur, les balises du HTML elles-mêmes apparaissent, elles ne seront pas interprétées! Pour pouvoir interpréter le HTML et l'insérer dans ton DOM, il va falloir passer cette variable content à une prop dangerouslySetInnerHTML que React ajoute sur tout élément HTML. Pour t'en servir, tu peux aller voir cette page de la doc.
+À chaque fois que tu écris dans l'éditeur, tu devrais voir le rendu se mettre à jour en live au-dessus.
 
-À ce niveau-là, normalement, à chaque fois que tu écris du markdown dans ton éditeur, tu devrais le voir interprété en live un peu plus haut dans ta page.
+### 4.3. Sauvegarder les données
 
-4.3. Sauvegarder ce que tu écris dans le localStorage
-Pour sauvegarder ce que tu écris, je t'invite à créer un bouton "save" dans ton composant MarkdownInput. Au clic sur ce bouton, tu appelleras une fonction handleSave, qui utilisera localStorage.setItem(), en lui passant un nom (par ex. blocNote), et le contenu en markdown (non transformé).
+Ajoute un bouton « Save » dans **MarkdownInput**. Au clic, une fonction `handleSave` enregistre les données (titre + contenu markdown) dans le **localStorage** (ex. `localStorage.setItem('blocNote', ...)`). Vérifie avec `console.log(localStorage.getItem('blocNote'))` que les données sont bien enregistrées.
 
-Ensuite, si tu fais un console.log() de localStorage.getItem('blocNote'), tu devrais voir le contenu "brut" de ton bloc-notes s'afficher dans la console.
+Au chargement de l'app, récupère ces données pour initialiser le state. Pour éviter d’appeler `localStorage.getItem()` à chaque rendu, utilise une **fonction d’initialisation** dans `useState` : `useState(() => JSON.parse(localStorage.getItem('blocNote') ?? 'null'))` (ou une structure adaptée à tes notes).
 
-Si c'est bien le cas, alors il faudra utiliser ceci pour récupérer ces données, lors du chargement de l'application. Pour cela, tu pourras utiliser une fonction en paramètre de useState, qui pourra directement initialiser le state avec ces données. Pourquoi une fonction? Pour éviter que localStorage.getItem(), qui est gourmand en ressources machine, ne soit appelée à chaque rendu!
+*Pour aller plus loin* : tu peux remplacer le localStorage par **IndexedDB** (par ex. avec `idb-keyval`) pour gérer plus de notes et plus de données — voir la *recommandation* du projet.
 
-4.4. À toi de jouer !
-Fort de tous ces conseils, à toi de voir comment tu veux penser la composition de ton application. Souviens-toi juste qu'il n'y a pas de trop petit composant! 😉
+### 4.4. À toi de jouer
+
+Avec tout ça, à toi de concevoir la liste de notes à gauche, la sélection de la note courante, et la gestion de plusieurs notes. Souviens-toi qu’il n’y a pas de trop petit composant.
