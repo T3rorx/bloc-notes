@@ -6,3 +6,10 @@
     font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 }
+
+@layer components {
+  .note-title {
+    @apply text-center text-2xl font-medium tracking-tight truncate max-w-full mx-auto;
+    color: oklch(0.97 0.008 247);
+  }
+}

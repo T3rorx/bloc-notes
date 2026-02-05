@@ -1,12 +1,16 @@
+import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { useNotesStore } from '@/stores/notesStore'
 import { NoteItem } from './NoteItem'
+import { ConfirmDialog } from './ConfirmDialog'
 
 export function NoteSidebar() {
   const notes = useNotesStore((s) => s.notes)
   const currentNoteId = useNotesStore((s) => s.currentNoteId)
   const selectNote = useNotesStore((s) => s.selectNote)
   const createNote = useNotesStore((s) => s.createNote)
+  const deleteNote = useNotesStore((s) => s.deleteNote)
+  const [pendingDeleteId, setPendingDeleteId] = useState(null)
 
   return (
     <aside className="w-80 flex-shrink-0 border-r border-slate-700 bg-slate-900 flex flex-col">
@@ -33,11 +37,22 @@ export function NoteSidebar() {
                 note={note}
                 isActive={note.id === currentNoteId}
                 onSelect={selectNote}
+                onDeleteRequest={setPendingDeleteId}
               />
             ))}
           </div>
         )}
       </div>
+      <ConfirmDialog
+        open={pendingDeleteId != null}
+        title="Supprimer la note ?"
+        message="Cette action est irréversible. La note sera définitivement supprimée."
+        onConfirm={() => {
+          if (pendingDeleteId) deleteNote(pendingDeleteId)
+          setPendingDeleteId(null)
+        }}
+        onCancel={() => setPendingDeleteId(null)}
+      />
     </aside>
   )
 }

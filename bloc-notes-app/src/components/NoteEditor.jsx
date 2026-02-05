@@ -55,25 +55,25 @@ export function NoteEditor() {
 
   if (!currentNoteId) {
     return (
-      <div className="flex flex-1 items-center justify-center p-8 text-slate-500">
+      <div className="flex min-h-0 flex-1 items-center justify-center p-8 text-slate-500">
         Sélectionne une note ou crée-en une.
       </div>
     )
   }
 
   return (
-    <div className="flex flex-col gap-3 p-4">
+    <div className="flex min-h-0 flex-1 flex-col gap-3 p-4">
       <input
         {...register('title')}
-        className="w-full text-2xl font-bold bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-500"
+        className="w-full shrink-0 text-2xl font-bold bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-500"
         placeholder="Titre de la note"
       />
       {formState.errors.title && (
-        <p className="text-sm text-red-400">{formState.errors.title.message}</p>
+        <p className="shrink-0 text-sm text-red-400">{formState.errors.title.message}</p>
       )}
       <textarea
         {...register('content')}
-        className="w-full font-mono min-h-[300px] bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-500 resize-y"
+        className="w-full min-h-0 flex-1 font-mono bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-500 resize-none"
         placeholder="Contenu en markdown..."
       />
     </div>
