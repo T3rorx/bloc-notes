@@ -1,12 +1,13 @@
-import { createStore } from 'idb-keyval'
+import { createStore, get, set, keys, del } from 'idb-keyval'
 
-const store = createStore('bloc-notes-db', 'notes')
+const customStore = createStore('bloc-notes-db', 'notes')
 
 export async function getAllNotes() {
   try {
-    const keys = await store.keys()
-    const notes = await Promise.all(keys.map((key) => store.get(key)))
-    return notes.filter(Boolean).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
+    const keysList = await keys(customStore)
+    const notes = await Promise.all(keysList.map((key) => get(key, customStore)))
+    const filtered = notes.filter(Boolean)
+    return filtered.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
   } catch (err) {
     return []
   }
@@ -14,7 +15,7 @@ export async function getAllNotes() {
 
 export async function getNote(id) {
   try {
-    return await store.get(id)
+    return await get(id, customStore)
   } catch {
     return null
   }
@@ -22,7 +23,7 @@ export async function getNote(id) {
 
 export async function saveNote(note) {
   try {
-    await store.set(note.id, note)
+    await set(note.id, note, customStore)
     return note
   } catch (err) {
     throw err
@@ -31,7 +32,7 @@ export async function saveNote(note) {
 
 export async function deleteNote(id) {
   try {
-    await store.del(id)
+    await del(id, customStore)
   } catch (err) {
     throw err
   }
